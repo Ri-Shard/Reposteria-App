@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "367877707451",
+    "project_id": "eshop-7bd9e",
+    "storage_bucket": "eshop-7bd9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367877707451:android:b50dcb3e02ce4f805c7b9e",
+        "android_client_info": {
+          "package_name": "com.reposteria.eshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367877707451-f4hq57oe723go8cqpu509tovs069hvno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr74M_tdGg5MWy9tfHoLztS-K3XacKW-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367877707451-f4hq57oe723go8cqpu509tovs069hvno.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
