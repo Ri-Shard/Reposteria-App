@@ -13,7 +13,104 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 25.0,bottom: 10.0),
+            color: Colors.pink,
+            child: Column(
+              children: [
+                Material(
+                  borderRadius: BorderRadius.all(Radius.circular(80.0)),
+                  elevation: 8.0,
+                  child: Container(
+                    height: 160.0,
+                    width:160.0,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        ReposteriaApp.sharedPreferences.getString(ReposteriaApp.userAvatarUrl) ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0,),
+                Text(
+                 ReposteriaApp.sharedPreferences.getString(ReposteriaApp.userName),
+                 style: TextStyle(color: Colors.white,fontSize: 35.0,fontFamily: "Signatra"),
+                )
+              ],
+              ),
+          ),
+          SizedBox(height: 12.0),
+          Container(
+            padding: EdgeInsets.only(top:1.0),
+            color: Colors.pink,
+            child: Column(
+                children: [
+                ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Inicio",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  Route route = MaterialPageRoute (builder: (c) => StoreHome());
+                  Navigator.pushReplacement(context, route); 
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
+                ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Mis Ordenes",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  Route route = MaterialPageRoute (builder: (c) => MyOrders());
+                  Navigator.pushReplacement(context, route); 
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),
+
+                ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Mi carrito",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  Route route = MaterialPageRoute (builder: (c) => CartPage());
+                  Navigator.pushReplacement(context, route); 
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),
+
+                  ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Buscar",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  Route route = MaterialPageRoute (builder: (c) => SearchProduct());
+                  Navigator.pushReplacement(context, route); 
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),
+
+                  ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Añadir nueva Direccion",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  Route route = MaterialPageRoute (builder: (c) => AddAddress());
+                  Navigator.pushReplacement(context, route); 
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),
+
+                  ListTile(
+                leading: Icon(Icons.home,color: Colors.white),
+                title: Text("Cerrar Sesion",style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  ReposteriaApp.auth.signOut().then((c){
+                  Route route = MaterialPageRoute (builder: (c) => AuthenticScreen());
+                  Navigator.pushReplacement(context, route); 
+                  });
+                } ,
+                ),
+                Divider(height: 10.0,color: Colors.white,thickness: 6.0),   
+                ],
+
+            ),
+             ),
+        ],
       ),
     );
   }
