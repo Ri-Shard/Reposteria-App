@@ -19,6 +19,8 @@ Future<void> main() async
   WidgetsFlutterBinding.ensureInitialized();
 
   ReposteriaApp.auth = FirebaseAuth.instance;
+  ReposteriaApp.sharedPreferences = await SharedPreferences.getInstance();
+  ReposteriaApp.firestore = Firestore.instance;
 
 
   runApp(MyApp());
@@ -79,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
               SizedBox(height:30.0),
               Text(
                 "Mmmm... Delicioso",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
+                  style: TextStyle(color: Colors.white, fontSize: 30,fontFamily: "Signatra"),
                 ),
             ],
           ),

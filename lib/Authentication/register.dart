@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/DialogBox/loadingDialog.dart';
@@ -41,7 +42,7 @@ class _RegisterState extends State<Register>
           mainAxisSize: MainAxisSize.max,
           children: [
             InkWell(
-              onTap:() => print("Selected"),
+              onTap: _selectAndPickImage,
               child: CircleAvatar(
                 radius: _screenWidth*0.15,
                 backgroundColor: Colors.white,
@@ -77,16 +78,16 @@ class _RegisterState extends State<Register>
                   CustomTextField(
                     controller: _cPasswordTextEditingController,
                     data: Icons.lock,
-                    hintText:"Comfirmar Contraseña",
+                    hintText:"Confirmar Contraseña",
                     isObsecure:true,
                   ),                                  
                 ],
             ),
             ),
             RaisedButton(
-              onPressed: ()=>("clicked"),
+              onPressed: () {uploadAndSaveImage();}, 
               color:Colors.pink,
-              child: Text("Iniciar Sesion", style: TextStyle(color: Colors.white),),
+              child: Text("Registrar", style: TextStyle(color: Colors.white),),
             ),
             SizedBox(
               height: 30.0,
@@ -103,6 +104,117 @@ class _RegisterState extends State<Register>
         ),
       ),
     );
+  }
+
+  Future <void> _selectAndPickImage() async{
+    _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
+
+ Future <void>  uploadAndSaveImage() async{
+   if(_imageFile == null)
+   {
+     showDialog(
+       context: context,
+       builder: (c){
+         return ErrorAlertDialog(message: "Por favor selecciona una imagen",);
+       }
+     );
+   }else
+   {
+     _passwordTextEditingController.text == _cPasswordTextEditingController.text
+     ? _emailTextEditingController.text.isNotEmpty && 
+     _passwordTextEditingController.text.isNotEmpty &&
+      _cPasswordTextEditingController.text.isNotEmpty && 
+      _nameTextEditingController.text.isNotEmpty
+
+      ? uploadToStorage()
+      : displayDialog ("Por favor llene completamente los datos")
+      : displayDialog ("Las contraseñas no coinciden");
+   }
+ }
+
+ displayDialog(String msg)
+ {
+   showDialog
+   (
+     context: context,
+     builder: (c)
+     {
+       return ErrorAlertDialog(message: msg,);
+     }
+   );
+ }
+
+  uploadToStorage() async
+  {
+    showDialog
+    (
+      context: context,
+      builder: (c)
+      {
+        return LoadingAlertDialog(message: "Registrando, Por Favor espere.....");
+      }
+    );
+
+    String imageFileName =DateTime.now().millisecondsSinceEpoch.toString();
+    StorageReference storageReference = FirebaseStorage.instance.ref().child(imageFileName);
+    StorageUploadTask storageUploadTask = storageReference.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
+    await taskSnapshot.ref.getDownloadURL().then((urlImage){
+
+      userImageUrl = urlImage;
+      _registerUser();
+    });
+  }
+
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+void _registerUser() async
+{
+  FirebaseUser firebaseUser;
+  await _auth.createUserWithEmailAndPassword
+  (
+    email: _emailTextEditingController.text.trim(),
+   password: _passwordTextEditingController.text.trim(),
+   ).then((auth){
+     firebaseUser = auth.user;
+   }).catchError((error){
+     Navigator.pop(context);
+     showDialog(
+       context: context,
+       builder: (c)
+       {
+         return ErrorAlertDialog(message: error.message.toString(),);
+       }
+     );
+   });
+
+   if(firebaseUser != null)
+   {
+     saveUSerInfoToFireStore(firebaseUser).then((value){
+       Navigator.pop(context);
+       Route route = MaterialPageRoute (builder: (c) => StoreHome());
+       Navigator.pushReplacement(context, route);
+     });
+   }
+}
+
+  Future saveUSerInfoToFireStore(FirebaseUser fUser) async
+  {
+    Firestore.instance.collection("users").document(fUser.uid).setData({
+      "uid":fUser.uid,
+      "email":fUser.email,
+      "name":_nameTextEditingController.text.trim(),
+      "url":userImageUrl,
+      ReposteriaApp.userCartList : ["garbageValue"],
+    });
+
+    await ReposteriaApp.sharedPreferences.setString("uid", fUser.uid);
+    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userEmail, fUser.email);
+    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userName, _nameTextEditingController.text.trim(),);
+    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userAvatarUrl,userImageUrl );
+    await ReposteriaApp.sharedPreferences.setStringList(ReposteriaApp.userCartList, ["garbageValue"]);
+    
   }
 }
 
