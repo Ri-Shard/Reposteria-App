@@ -80,7 +80,7 @@ class _LoginState extends State<Login>
                    );
               }, 
               color:Colors.pink,
-              child: Text("Registrar", style: TextStyle(color: Colors.white),),
+              child: Text("Ingresar", style: TextStyle(color: Colors.white),),
             ),
              SizedBox(
               height: 50.0,
