@@ -256,9 +256,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   {
     final itemsRef = Firestore.instance.collection("items");
     itemsRef.document(productId).setData({
-      "ShortInfo": _shortInfoTextEditingController.text.trim(),
+      "shortInfo": _shortInfoTextEditingController.text.trim(),
       "longDescription": _descriptionTextEditingController.text.trim(),
-      "price": _priceTextEditingController.text.trim(),
+      "price": int.parse(_priceTextEditingController.text),
       "publishedDate": DateTime.now(),
       "status": "Disponible",
       "thumbnailUrl": downloadUrl,

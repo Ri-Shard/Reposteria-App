@@ -22,7 +22,7 @@ class _AuthenticScreenState extends State<AuthenticScreen> {
           title: Text
           (
             "Reposteria App",
-            style: TextStyle(fontSize: 50.0,color: Colors.white,fontFamily: "Signatra"),
+            style: TextStyle(fontSize: 40.0,color: Colors.white,fontFamily: "Signatra"),
           ),
           centerTitle: true,
           bottom: TabBar
