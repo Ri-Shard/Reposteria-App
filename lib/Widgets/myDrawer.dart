@@ -56,7 +56,7 @@ class MyDrawer extends StatelessWidget {
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
                 ListTile(
-                leading: Icon(Icons.home,color: Colors.white),
+                leading: Icon(Icons.reorder,color: Colors.white),
                 title: Text("Mis Ordenes",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => MyOrders());
@@ -66,7 +66,7 @@ class MyDrawer extends StatelessWidget {
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
                 ListTile(
-                leading: Icon(Icons.home,color: Colors.white),
+                leading: Icon(Icons.shopping_cart,color: Colors.white),
                 title: Text("Mi carrito",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => CartPage());
@@ -76,7 +76,7 @@ class MyDrawer extends StatelessWidget {
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
                   ListTile(
-                leading: Icon(Icons.home,color: Colors.white),
+                leading: Icon(Icons.search,color: Colors.white),
                 title: Text("Buscar",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => SearchProduct());
@@ -86,7 +86,7 @@ class MyDrawer extends StatelessWidget {
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
                   ListTile(
-                leading: Icon(Icons.home,color: Colors.white),
+                leading: Icon(Icons.add_location,color: Colors.white),
                 title: Text("Añadir nueva Direccion",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => AddAddress());
@@ -96,7 +96,7 @@ class MyDrawer extends StatelessWidget {
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
 
                   ListTile(
-                leading: Icon(Icons.home,color: Colors.white),
+                leading: Icon(Icons.exit_to_app,color: Colors.white),
                 title: Text("Cerrar Sesion",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   ReposteriaApp.auth.signOut().then((c){

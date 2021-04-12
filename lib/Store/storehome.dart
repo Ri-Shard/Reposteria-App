@@ -106,6 +106,11 @@ class _StoreHomeState extends State<StoreHome> {
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
+    onTap: (){
+
+       Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model));
+       Navigator.pushReplacement(context, route);
+    },
     splashColor: Colors.pink,
     child: Padding(
       padding: EdgeInsets.all(6.0),
@@ -171,7 +176,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                               child: Row(
                                 children: [
                                   Text(
-                                    r"Precio Original: $",
+                                    r"Precio Original: $ ",
                                     style: TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.grey,
@@ -207,7 +212,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                   ),
                                   
                                   Text(
-                                    (model.price+model.price).toString(),
+                                    (model.price).toString(),
                                     style: TextStyle(
                                       fontSize: 15.0,
                                       color: Colors.grey,
