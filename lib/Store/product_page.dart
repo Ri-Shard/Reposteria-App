@@ -87,13 +87,13 @@ class _ProductPageState extends State<ProductPage>
                     padding: EdgeInsets.only(top: 8.0),
                     child: Center(
                       child: InkWell(
-                        onTap: () =>print("clicked"),
+                        onTap: () =>checkItemInCart(widget.itemModel.shortInfo, context),
                         child: Container(
                           color: Colors.pink,
                           width: MediaQuery.of(context).size.width-40.0,
                           height: 50.0,
                           child: Center(
-                            child: Text("Añadido al carrito",style: TextStyle(color: Colors.white)),
+                            child: Text("Añadir al carrito",style: TextStyle(color: Colors.white)),
                           ),
                         ),
                       ),

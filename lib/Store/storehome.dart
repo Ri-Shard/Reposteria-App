@@ -41,7 +41,7 @@ class _StoreHomeState extends State<StoreHome> {
                   onPressed: ()
                   {
                     Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.pushReplacement(context, route);
+                    Navigator.push(context, route);
                   }
                 ),
                 Positioned(
@@ -60,7 +60,7 @@ class _StoreHomeState extends State<StoreHome> {
                           builder: (context, counter, _)
                           {
                             return Text(
-                            counter.count.toString(),
+                            ( ReposteriaApp.sharedPreferences.getStringList(ReposteriaApp.userCartList).length-1).toString(),
                             style:TextStyle(color: Colors.white,fontSize: 12.0,fontWeight:FontWeight.w500),
                             );
                           },
@@ -101,15 +101,14 @@ class _StoreHomeState extends State<StoreHome> {
   }
 }
 
-
-
+ 
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
     onTap: (){
 
        Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model));
-       Navigator.pushReplacement(context, route);
+       Navigator.push(context, route);
     },
     splashColor: Colors.pink,
     child: Padding(
@@ -226,9 +225,33 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       ],
                     ),
                     Flexible(
-                      child: Container(
-                        //todo cart item remove
-                      ),
+                      child: Container( ),
+                    ),
+                    //to implement the cart item add/remove feature
+                    Align(
+                        alignment: Alignment.centerRight,
+                          child: removeCartFunction == null
+                          ? IconButton(
+                            icon: Icon(Icons.add_shopping_cart, color: Colors.pinkAccent),
+                            onPressed: ()
+                            {
+                              checkItemInCart(model.shortInfo, context);
+                            },
+                          )
+                          :IconButton(
+                            icon: Icon(Icons.delete, color: Colors.pinkAccent),
+                            onPressed: (){
+                                
+                              removeCartFunction();
+                            
+                              //TODO refresh luego de la funcion de remove
+                            },
+                          ),
+                    ),
+                    
+                    Divider(
+                      height: 5.0,
+                      color: Colors.pink
                     ),
               ],
             ),
@@ -248,6 +271,25 @@ Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
 
 
 
-void checkItemInCart(String productID, BuildContext context)
+void checkItemInCart(String shortInfoAsID, BuildContext context)
 {
+  ReposteriaApp.sharedPreferences.getStringList(ReposteriaApp.userCartList).contains(shortInfoAsID)
+    ? Fluttertoast.showToast(msg: "Producto en el carrito.")
+    :addItemToCart(shortInfoAsID,context);
+}
+
+addItemToCart(String shortInfoAsID,BuildContext context)
+{
+  List tempCartList = ReposteriaApp.sharedPreferences.getStringList(ReposteriaApp.userCartList);
+  tempCartList.add(shortInfoAsID);
+
+  ReposteriaApp.firestore.collection(ReposteriaApp.collectionUser)
+  .document(ReposteriaApp.sharedPreferences.getString(ReposteriaApp.userUID))
+  .updateData({
+    ReposteriaApp.userCartList : tempCartList,
+  }).then((v){
+    Fluttertoast.showToast(msg: "Producto Añadido al carrito ");
+    ReposteriaApp.sharedPreferences.setStringList(ReposteriaApp.userCartList,tempCartList);
+    Provider.of<CartItemCounter>(context,listen: false).displayResult();
+  });
 }
