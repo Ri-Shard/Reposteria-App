@@ -27,7 +27,19 @@ class _AddressState extends State<Address>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
+      child: Scaffold(
+        appBar: MyAppBar(),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text ("Añadir nueva Direccion"),
+          backgroundColor: Colors.pink,
+          icon: Icon(Icons.add_location),
+          onPressed: ()
+          {
+              Route route = MaterialPageRoute(builder: (c) => AddAddress());
+              Navigator.push(context, route);
+          },
+        ),
+      ),
     );
   }
 

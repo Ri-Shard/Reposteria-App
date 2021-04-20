@@ -266,7 +266,27 @@ Widget sourceInfo(ItemModel model, BuildContext context,
 
 
 Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
-  return Container();
+  return Container(
+    height: 150.0,
+    width: width *.34,
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    decoration: BoxDecoration(
+      color: primaryColor,
+      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      boxShadow: <BoxShadow>[
+        BoxShadow(offset: Offset(0,5),blurRadius:10.0,color: Colors.grey[200]),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      child: Image.network(
+        imgPath,
+        height: 150.0,
+        width: width*.34,
+        fit: BoxFit.fill,
+      ),
+    ),
+  );
 }
 
 

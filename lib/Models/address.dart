@@ -2,8 +2,8 @@ class AddressModel {
   String name;
   String phoneNumber;
   String flatNumber;
-  String city;
-  String state;
+  String city = "Valledupar";
+  String state = "Cesar";
   String pincode;
 
   AddressModel(
