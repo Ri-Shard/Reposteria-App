@@ -1,4 +1,5 @@
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
 import 'package:e_shop/Models/address.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,8 @@ class AddAddress extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final cName = TextEditingController();
   final cFlatHomeNumber = TextEditingController();
- // final cCity = TextEditingController();
-  //final cDepartment = TextEditingController();
-  final cPinCode = TextEditingController();
+  final cCity = TextEditingController();
+  final cState = TextEditingController();
   final cPhoneNumber = TextEditingController();
 
   @override
@@ -27,9 +27,10 @@ class AddAddress extends StatelessWidget {
             {
               final model = AddressModel(
                 name: cName.text.trim(),
-                pincode: cPinCode.text.trim(),
                 phoneNumber: cPhoneNumber.text.trim(),
                 flatNumber: cFlatHomeNumber.text.trim(),
+                state: cState.text.trim(),
+                city: cCity.text.trim(),
               ).toJson();
 
               ReposteriaApp.firestore.collection(ReposteriaApp.collectionUser)
@@ -39,10 +40,13 @@ class AddAddress extends StatelessWidget {
                 .setData(model)
                 .then((value) {
                   final snack = SnackBar(content: Text("Nueva Direccion añadida satisfactoriamente"));
-                  scaffoldKey.currentState.showSnackBar(snack);
+                  scaffoldKey.currentState.showSnackBar(snack);  
                   FocusScope.of(context).requestFocus(FocusNode());
                   formKey.currentState.reset();
                 });
+
+                Route route = MaterialPageRoute(builder: (c)=>StoreHome());
+                Navigator.push(context, route);
             }
           }, 
           label: Text ("Hecho"),
@@ -75,13 +79,18 @@ class AddAddress extends StatelessWidget {
                       controller: cPhoneNumber,
                     ),
                       MyTextField(
+                      hint: "Departamento",
+                      controller: cState,
+                    ),
+                      MyTextField(
+                      hint: "Ciudad",
+                      controller: cCity,
+                    ),
+                      MyTextField(
                       hint: "Direccion",
                       controller: cFlatHomeNumber,
                     ),
-                      MyTextField(
-                      hint: "PinCode ",
-                      controller: cPinCode,
-                    ),
+
                   ],
                 ),
               ),
