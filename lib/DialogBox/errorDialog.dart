@@ -1,3 +1,4 @@
+import 'package:e_shop/common/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +13,17 @@ class ErrorAlertDialog extends StatelessWidget
   {
     return AlertDialog(
       key: key,
-      content: Text(message),
+      content: Text(message,textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
       actions: <Widget>[
-        RaisedButton(onPressed: ()
+        MaterialButton(
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40), 
+          ),          
+          onPressed: ()
         {
           Navigator.pop(context);
         },
-          color: Colors.red,
+          color: kCategorypinkColor,
           child: Center(
             child: Text("OK"),
           ),

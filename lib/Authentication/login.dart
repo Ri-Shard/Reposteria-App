@@ -1,4 +1,5 @@
 import 'package:e_shop/Animation/FadeAnimation.dart';
+import 'package:e_shop/Authentication/register.dart';
 import 'package:e_shop/common/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -80,15 +81,14 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   )),
-                  FadeAnimation(1.5, Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("¿No tienes Cuenta?"),
-                      Text("Registrarse", style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18
-                      ),),
-                    ],
-                  ))
+              FadeAnimation(1.6,FlatButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+                      }, 
+                      child :Text("¿No tienes cuenta?"+" Registrate", style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16
+                         ),),                    
+                      ),)
                 ],
               ),
             ),

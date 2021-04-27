@@ -1,167 +1,10 @@
-/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
-import 'package:e_shop/Authentication/authenication.dart';
-import 'package:e_shop/Widgets/customTextField.dart';
+import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/common/colors.dart';
 import 'package:flutter/material.dart';
-
-
-
-
-class AdminSignInPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kCategorypinkColor,
-          title: Text
-          (
-            "Reposteria App",
-            style: TextStyle(fontSize: 40.0,color: Colors.white,fontFamily: "Signatra"),
-          ),
-          centerTitle: true,
-      ),
-      body: AdminSignInScreen(),
-
-    );
-  }
-}
-
-
-class AdminSignInScreen extends StatefulWidget {
-  @override
-  _AdminSignInScreenState createState() => _AdminSignInScreenState();
-}
-
-class _AdminSignInScreenState extends State<AdminSignInScreen>
-{
-    final TextEditingController _adminIdTextEditingController = TextEditingController();
-    final TextEditingController _passwordTextEditingController = TextEditingController();
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-
-    double _screenWidth = MediaQuery.of(context).size.width, _screenHeight = MediaQuery.of(context).size.height;
-
-    return SingleChildScrollView(
-      child:Container(
-        child:Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              child: Image.asset(
-                "images/admin.png",
-                height:240.0,
-                width:240.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Accede a tu cuenta de Administrador",
-                style: TextStyle(color:Colors.pink, fontSize: 20.0, fontWeight: FontWeight.bold ),
-              ),
-            ),
-            Form(
-              key:_formKey,
-              child: Column(
-                children: [
-
-                  CustomTextField(
-                    controller: _adminIdTextEditingController,
-                    data: Icons.person,
-                    hintText:"AdminID",
-                    isObsecure:false,
-                  ),
-                  CustomTextField(
-                    controller: _passwordTextEditingController,
-                    data: Icons.lock,
-                    hintText:"Contraseña",
-                    isObsecure:true,
-                  ),                                  
-                ],
-            ),
-            ),
-                          SizedBox(
-                height:25.0 ,
-              ),
-              RaisedButton(
-              onPressed: () {
-                _adminIdTextEditingController.text.isNotEmpty
-                 && _passwordTextEditingController.text.isNotEmpty
-                 ?loginAdmin() 
-                 : showDialog(
-                   context: context,
-                   builder: (c)
-                   {
-                     return ErrorAlertDialog(message: "Por favor revisa los campos");
-                   }
-                   );
-              }, 
-              color:Colors.pink,
-              child: Text("Ingresar", style: TextStyle(color: Colors.white),),
-            ),
-             SizedBox(
-              height: 50.0,
-            ),
-            Container(
-              height: 4.0 ,
-              width: _screenWidth*0.8,
-              color:Colors.pink,
-              ),
-              SizedBox(
-                height:20.0 ,
-              ),
-              FlatButton.icon(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthenticScreen())),
-                icon: (Icon(Icons.nature_people,color: Colors.pink)),
-                label: Text("No Soy Administrador", style: TextStyle(color: Colors.pink,fontWeight: FontWeight.bold),),
-              ),
-                            SizedBox(
-                height:50.0 ,
-              ),
-          ],
-        )
-      )
-    ); 
-   }
-
-   loginAdmin()
-   {
-     Firestore.instance.collection("admins").getDocuments().then((snapshot)
-     {
-       snapshot.documents.forEach((result){
-
-         if(result.data["id"] != _adminIdTextEditingController.text.trim())
-         {
-           Scaffold.of(context).showSnackBar(SnackBar(content:Text("Tu identificacion de admin no es correcta")));
-         } else if(result.data["password"] != _passwordTextEditingController.text.trim())
-         {
-          Scaffold.of(context).showSnackBar(SnackBar(content:Text("Tu Contraseña no es correcta")));
-         }
-         else
-         {
-          Scaffold.of(context).showSnackBar(SnackBar(content:Text("Bienvenido Administrador, " + result.data["name"])));
-
-          setState(()
-          {
-            _adminIdTextEditingController.text = "";
-            _passwordTextEditingController.text = "";
-          });   
-
-          Route route = MaterialPageRoute (builder: (c) => UploadPage());
-          Navigator.pushReplacement(context, route);
-         }
-       });
-     });
-   }
-}
-*/
-import 'package:e_shop/Animation/FadeAnimation.dart';
-import 'package:e_shop/common/colors.dart';
-import 'package:flutter/material.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
 
 class AdminSignInPage extends StatelessWidget {
   @override
@@ -180,7 +23,22 @@ class AdminSignInPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black,),
         ),
       ),
-      body: Container(
+      body: AdminSignInScreen(),
+      
+    );
+  }
+  }
+  class AdminSignInScreen extends StatefulWidget {
+  @override
+  _AdminSignInScreenState createState() => _AdminSignInScreenState();
+  }
+  class _AdminSignInScreenState extends State<AdminSignInScreen> {
+    final TextEditingController _adminIdTextEditingController = TextEditingController();
+    final TextEditingController _passwordTextEditingController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+
+    return       Container(
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(
@@ -207,8 +65,8 @@ class AdminSignInPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        FadeAnimation(1.2, makeInput(label: "ID Administrador")),
-                        FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true)),
+                        FadeAnimation(1.2, makeInput(label: "ID Administrador",controller:_adminIdTextEditingController)),
+                        FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true, controller: _passwordTextEditingController)),
                       ],
                     ),
                   ),
@@ -228,7 +86,19 @@ class AdminSignInPage extends StatelessWidget {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {},
+                          onPressed: ()  {
+                            _adminIdTextEditingController.text.isNotEmpty
+                            && _passwordTextEditingController.text.isNotEmpty
+                            ?loginAdmin() 
+                            :showDialog(
+                              context: context,
+                              builder: (c)
+                              {
+                                return ErrorAlertDialog(message: "Por favor revisa los campos");
+                              }
+                              );
+;                           
+                          },
                         color: kCategorypinkColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -244,10 +114,12 @@ class AdminSignInPage extends StatelessWidget {
                   FadeAnimation(1.5, Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("¿No eres Admidistrador?"),
-                      Text("Volver", style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18
-                      ),),
+                      FlatButton(
+                        onPressed: (){Navigator.pop(context);},                       
+                      child :Text("¿No eres Administrador?"+" Volver", style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16
+                      ),),                    
+                      ),
                     ],
                   ))
                 ],
@@ -264,11 +136,9 @@ class AdminSignInPage extends StatelessWidget {
             ))
           ],
         ),
-      ),
-    );
+      );
   }
-
-  Widget makeInput({label, obscureText = false}) {
+  Widget makeInput({label, obscureText = false,controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -279,6 +149,7 @@ class AdminSignInPage extends StatelessWidget {
         ),),
         SizedBox(height: 5,),
         TextField(
+          autofocus: false,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -289,9 +160,53 @@ class AdminSignInPage extends StatelessWidget {
               borderSide: BorderSide(color: Colors.grey[400])
             ),
           ),
+          controller: controller,
         ),
         SizedBox(height: 30,),
       ],
     );
   }
+
+   loginAdmin()
+   {
+     Firestore.instance.collection("admins").getDocuments().then((snapshot)
+     {
+       snapshot.documents.forEach((result){
+
+         if(result.data["id"] != _adminIdTextEditingController.text.trim())
+         {
+            showDialog(
+              context: context,
+              builder: (c)
+              {
+                return ErrorAlertDialog(message: "Id de Administrador Erronea");
+              }
+              );
+           
+         } else if(result.data["password"] != _passwordTextEditingController.text.trim())
+         {
+            showDialog(
+              context: context,
+              builder: (c)
+              {
+                return ErrorAlertDialog(message: "Contraseña Incorrecta");
+              }
+              );
+         }
+         else
+         {
+          setState(()
+          {
+            _adminIdTextEditingController.text = "";
+            _passwordTextEditingController.text = "";
+          });   
+
+          Route route = MaterialPageRoute (builder: (c) => UploadPage());
+          Navigator.pushReplacement(context, route);
+         }
+       });
+     });
+   }
 }
+        
+

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:e_shop/Animation/FadeAnimation.dart';
+import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/common/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +22,27 @@ class SignupPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black,),
         ),
       ),
-      body: SingleChildScrollView(
+      body: RegisterBody(),
+    );
+  }
+}
+
+  class RegisterBody extends StatefulWidget {
+  @override
+  _RegisterBody createState() => _RegisterBody();
+  }
+
+  class _RegisterBody extends State<RegisterBody> {
+    final TextEditingController _nameTextEditingController = TextEditingController();
+    final TextEditingController _emailTextEditingController = TextEditingController();
+    final TextEditingController _passwordTextEditingController = TextEditingController();
+    final TextEditingController _cPasswordTextEditingController = TextEditingController();
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    String userImageUrl = "";
+    File _imageFile;
+    @override
+   Widget build(BuildContext context) {
+            return SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 40),
           height: MediaQuery.of(context).size.height - 50,
@@ -73,21 +96,21 @@ class SignupPage extends StatelessWidget {
                   ),),
                 ),
               )),
-              FadeAnimation(1.6, Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("¿Ya tienes cuenta?"),
-                  Text(" Inicia Sesion", style: TextStyle(
-                    fontWeight: FontWeight.w600, fontSize: 18
-                  ),),
-                ],
-              )),
+              
+              FadeAnimation(1.6,FlatButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      },                       
+                      child :Text("¿Ya tienes cuenta?"+" Inicia Sesion", style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16
+                         ),),                    
+                      ),)
             ],
           ),
         ),
-      ),
-    );
-  }
+      );
+   }
+    }
 
   Widget makeInput({label, obscureText = false}) {
     return Column(
@@ -115,4 +138,3 @@ class SignupPage extends StatelessWidget {
       ],
     );
   }
-}
