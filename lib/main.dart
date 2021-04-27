@@ -13,6 +13,7 @@ import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
 import 'Store/storehome.dart';
+import 'common/colors.dart';
 
 Future<void> main() async
 {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
             title: 'ReposteriaApp',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              primaryColor: Colors.pink,
+              primaryColor: kCategorypinkColor,
             ),
             home: SplashScreen()
     ),

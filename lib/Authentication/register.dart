@@ -1,220 +1,118 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Widgets/customTextField.dart';
-import 'package:e_shop/DialogBox/errorDialog.dart';
-import 'package:e_shop/DialogBox/loadingDialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:e_shop/Animation/FadeAnimation.dart';
+import 'package:e_shop/common/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import '../Store/storehome.dart';
-import 'package:e_shop/Config/config.dart';
 
-import '../Widgets/customTextField.dart';
-
-
-
-class Register extends StatefulWidget {
-  @override
-  _RegisterState createState() => _RegisterState();
-}
-
-
-
-class _RegisterState extends State<Register>
-{
-  final TextEditingController _nameTextEditingController = TextEditingController();
-  final TextEditingController _emailTextEditingController = TextEditingController();
-  final TextEditingController _passwordTextEditingController = TextEditingController();
-  final TextEditingController _cPasswordTextEditingController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userImageUrl = "";
-  File _imageFile;
-
-
+class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width, _screenHeight = MediaQuery.of(context).size.height;
-    return SingleChildScrollView
-    (
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            InkWell(
-              onTap: _selectAndPickImage,
-              child: CircleAvatar(
-                radius: _screenWidth*0.15,
-                backgroundColor: Colors.white,
-                backgroundImage: _imageFile == null ? null :FileImage(_imageFile),
-                child: _imageFile ==null 
-                ?Icon(Icons.add_photo_alternate,size: _screenWidth*0.15, color: Colors.grey)
-                : null,
-              ),
-            ),
-            SizedBox(height: 8.0,),
-            Form(
-              key:_formKey,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: _nameTextEditingController,
-                    data: Icons.person,
-                    hintText:"Nombre",
-                    isObsecure:false,
-                  ),
-                  CustomTextField(
-                    controller: _emailTextEditingController,
-                    data: Icons.email,
-                    hintText:"Email",
-                    isObsecure:false,
-                  ),
-                  CustomTextField(
-                    controller: _passwordTextEditingController,
-                    data: Icons.lock,
-                    hintText:"Contraseña",
-                    isObsecure:true,
-                  ),
-                  CustomTextField(
-                    controller: _cPasswordTextEditingController,
-                    data: Icons.lock,
-                    hintText:"Confirmar Contraseña",
-                    isObsecure:true,
-                  ),                                  
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black,),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          height: MediaQuery.of(context).size.height - 50,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  FadeAnimation(1, Text("Registrarse", style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
+                  ),)),
+                  SizedBox(height: 20,),
+                  FadeAnimation(1.2, Text("Create una cuenta, es gratis", style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey[700]
+                  ),)),
                 ],
-            ),
-            ),
-            RaisedButton(
-              onPressed: () {uploadAndSaveImage();}, 
-              color:Colors.pink,
-              child: Text("Registrar", style: TextStyle(color: Colors.white),),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              height: 4.0 ,
-              width: _screenWidth*0.8,
-              color:Colors.pink,
               ),
-              SizedBox(
-                height:15.0 ,
-              )
-          ],
+              Column(
+                children: <Widget>[
+                  FadeAnimation(1.2, makeInput(label: "Email")),
+                  FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true)),
+                  FadeAnimation(1.4, makeInput(label: "Confirmar Contraseña", obscureText: true)),
+                ],
+              ),
+              FadeAnimation(1.5, Container(
+                padding: EdgeInsets.only(top: 3, left: 3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black),
+                    top: BorderSide(color: Colors.black),
+                    left: BorderSide(color: Colors.black),
+                    right: BorderSide(color: Colors.black),
+                  )
+                ),
+                child: MaterialButton(
+                  minWidth: double.infinity,
+                  height: 60,
+                  onPressed: () {},
+                  color: kCategorypinkColor,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)
+                  ),
+                  child: Text("Registrarse", style: TextStyle(
+                    fontWeight: FontWeight.w600, 
+                    fontSize: 18
+                  ),),
+                ),
+              )),
+              FadeAnimation(1.6, Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("¿Ya tienes cuenta?"),
+                  Text(" Inicia Sesion", style: TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: 18
+                  ),),
+                ],
+              )),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future <void> _selectAndPickImage() async{
-    _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-  }
-
- Future <void>  uploadAndSaveImage() async{
-   if(_imageFile == null)
-   {
-     showDialog(
-       context: context,
-       builder: (c){
-         return ErrorAlertDialog(message: "Por favor selecciona una imagen",);
-       }
-     );
-   }else
-   {
-     _passwordTextEditingController.text == _cPasswordTextEditingController.text
-     ? _emailTextEditingController.text.isNotEmpty && 
-     _passwordTextEditingController.text.isNotEmpty &&
-      _cPasswordTextEditingController.text.isNotEmpty && 
-      _nameTextEditingController.text.isNotEmpty
-
-      ? uploadToStorage()
-      : displayDialog ("Por favor llene completamente los datos")
-      : displayDialog ("Las contraseñas no coinciden");
-   }
- }
-
- displayDialog(String msg)
- {
-   showDialog
-   (
-     context: context,
-     builder: (c)
-     {
-       return ErrorAlertDialog(message: msg,);
-     }
-   );
- }
-
-  uploadToStorage() async
-  {
-    showDialog
-    (
-      context: context,
-      builder: (c)
-      {
-        return LoadingAlertDialog(message: "Registrando, Por Favor espere.....");
-      }
+  Widget makeInput({label, obscureText = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(label, style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          color: Colors.black87
+        ),),
+        SizedBox(height: 5,),
+        TextField(
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey[400])
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey[400])
+            ),
+          ),
+        ),
+        SizedBox(height: 30,),
+      ],
     );
-
-    String imageFileName =DateTime.now().millisecondsSinceEpoch.toString();
-    StorageReference storageReference = FirebaseStorage.instance.ref().child(imageFileName);
-    StorageUploadTask storageUploadTask = storageReference.putFile(_imageFile);
-    StorageTaskSnapshot taskSnapshot = await storageUploadTask.onComplete;
-    await taskSnapshot.ref.getDownloadURL().then((urlImage){
-
-      userImageUrl = urlImage;
-      _registerUser();
-    });
-  }
-
-
-FirebaseAuth _auth = FirebaseAuth.instance;
-void _registerUser() async
-{
-  FirebaseUser firebaseUser;
-  await _auth.createUserWithEmailAndPassword
-  (
-    email: _emailTextEditingController.text.trim(),
-   password: _passwordTextEditingController.text.trim(),
-   ).then((auth){
-     firebaseUser = auth.user;
-   }).catchError((error){
-     Navigator.pop(context);
-     showDialog(
-       context: context,
-       builder: (c)
-       {
-         return ErrorAlertDialog(message: error.message.toString(),);
-       }
-     );
-   });
-
-   if(firebaseUser != null)
-   {
-     saveUSerInfoToFireStore(firebaseUser).then((value){
-       Navigator.pop(context);
-       Route route = MaterialPageRoute (builder: (c) => StoreHome());
-       Navigator.pushReplacement(context, route);
-     });
-   }
-}
-
-  Future saveUSerInfoToFireStore(FirebaseUser fUser) async
-  {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
-      "uid":fUser.uid,
-      "email":fUser.email,
-      "name":_nameTextEditingController.text.trim(),
-      "url":userImageUrl,
-      ReposteriaApp.userCartList : ["garbageValue"],
-    });
-
-    await ReposteriaApp.sharedPreferences.setString("uid", fUser.uid);
-    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userEmail, fUser.email);
-    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userName, _nameTextEditingController.text.trim(),);
-    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userAvatarUrl,userImageUrl );
-    await ReposteriaApp.sharedPreferences.setStringList(ReposteriaApp.userCartList, ["garbageValue"]);
-    
   }
 }
-

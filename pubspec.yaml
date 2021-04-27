@@ -23,7 +23,7 @@ dependencies:
   image: ^2.0.7
   intl:
   pull_to_refresh: ^1.6.1
-
+  simple_animations: ^1.3.3 
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,6 +47,22 @@ flutter:
     - images/login.png
     - images/admin.png
     - images/cash.png
+    - images/Autentication.png
+    - images/Add_products.png
+    - images/Add_User.png
+    - images/Apreciation.png
+    - images/Checklist.png
+    - images/Completed.png
+    - images/Confirmed.png
+    - images/Directions.png
+    - images/empty_cart.png
+    - images/Empty_Orders.png
+    - images/male_avatar.png
+    - images/No_data.png
+    - images/On_way.png
+    - images/Order_Confirmed.png
+    - images/Photos.png
+    - images/Shopping_App.png
 
 
 
