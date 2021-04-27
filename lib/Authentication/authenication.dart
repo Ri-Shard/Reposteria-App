@@ -1,3 +1,4 @@
+import 'package:e_shop/Admin/adminLogin.dart';
 import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Authentication/register.dart';
@@ -89,7 +90,15 @@ class AuthenticScreen  extends StatelessWidget {
                         fontSize: 18
                       ),),
                     ),
-                  ))
+                    
+                  ),   
+                  ),
+                    FadeAnimation(1.7,FlatButton.icon(
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminSignInPage())),
+                      icon: (Icon(Icons.nature_people,color: kCategorypinkColor)),
+                      label: Text("Soy Administrador", style: TextStyle(color: kCategorypinkColor,fontWeight: FontWeight.bold),),
+                    ), 
+                    ) 
                 ],
               )
             ],
