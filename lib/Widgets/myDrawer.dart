@@ -26,8 +26,10 @@ class MyDrawer extends StatelessWidget {
                     height: 160.0,
                     width:160.0,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        ReposteriaApp.sharedPreferences.getString(ReposteriaApp.userAvatarUrl) ),
+                    backgroundColor: Colors.pink,
+                    backgroundImage: (
+                    AssetImage('images/male_avatar.png')
+                  )                      
                     ),
                   ),
                 ),

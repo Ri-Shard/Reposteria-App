@@ -1,9 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/Authentication/register.dart';
+import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/DialogBox/errorDialog.dart';
+import 'package:e_shop/DialogBox/loadingDialog.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/common/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login>
+{
+    final TextEditingController _emailTextEditingController = TextEditingController();
+    final TextEditingController _passwordTextEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +62,8 @@ class LoginPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        FadeAnimation(1.2, makeInput(label: "Email")),
-                        FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true)),
+                        FadeAnimation(1.2, makeInput(label: "Email",controller:_emailTextEditingController)),
+                        FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true,controller:_passwordTextEditingController )),
                       ],
                     ),
                   ),
@@ -68,8 +83,18 @@ class LoginPage extends StatelessWidget {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {},
-                        color: kCategorypinkColor,
+                        onPressed: () {
+                          _emailTextEditingController.text.isNotEmpty
+                          && _passwordTextEditingController.text.isNotEmpty
+                          ?loginUser() 
+                          : showDialog(
+                            context: context,
+                            builder: (c)
+                            {
+                              return ErrorAlertDialog(message: "Por favor revisa los campos");
+                            }
+                            );
+                        },                         color: kCategorypinkColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)
@@ -105,9 +130,61 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+
+  }
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void loginUser() async
+  {
+    showDialog(
+      context: context,
+      builder:(c)
+      {
+        return LoadingAlertDialog(message: "Autenticando, Por Favor espere.....",);
+      }
+    );
+    FirebaseUser firebaseUser;
+    await _auth.signInWithEmailAndPassword(
+      email: _emailTextEditingController.text.trim(),
+      password: _passwordTextEditingController.text.trim(),
+      ).then((authUser){
+        firebaseUser = authUser.user;
+      }).catchError((error){
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (c)
+          {
+            return ErrorAlertDialog(message: error.message.toString(),);
+          }
+      );
+      });
+      if(firebaseUser != null)
+      {
+        readData(firebaseUser).then((s){
+
+          Navigator.pop(context);
+          Route route = MaterialPageRoute (builder: (c) => StoreHome());
+          Navigator.pushReplacement(context, route);
+        });
+      }
+  }
+    Future readData(FirebaseUser fUser) async 
+  {
+    Firestore.instance.collection("users").document(fUser.uid).get().then((dataSnapshot) async {
+
+      await ReposteriaApp.sharedPreferences.setString("uid", dataSnapshot.data[ReposteriaApp.userUID]);
+      await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userEmail, dataSnapshot.data[ReposteriaApp.userEmail]);
+      await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userName, dataSnapshot.data[ReposteriaApp.userName]);
+
+      List<String> cartList = dataSnapshot.data[ReposteriaApp.userCartList].cast<String>();
+      await ReposteriaApp.sharedPreferences.setStringList(ReposteriaApp.userCartList,cartList);          
+    });
+
+    
   }
 
-  Widget makeInput({label, obscureText = false}) {
+  Widget makeInput({label, obscureText = false,controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -118,6 +195,7 @@ class LoginPage extends StatelessWidget {
         ),),
         SizedBox(height: 5,),
         TextField(
+          controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),

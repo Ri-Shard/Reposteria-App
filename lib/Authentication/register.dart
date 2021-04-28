@@ -1,8 +1,14 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/Authentication/login.dart';
+import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/DialogBox/errorDialog.dart';
+import 'package:e_shop/DialogBox/loadingDialog.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/common/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
@@ -38,8 +44,6 @@ class SignupPage extends StatelessWidget {
     final TextEditingController _passwordTextEditingController = TextEditingController();
     final TextEditingController _cPasswordTextEditingController = TextEditingController();
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    String userImageUrl = "";
-    File _imageFile;
     @override
    Widget build(BuildContext context) {
             return SingleChildScrollView(
@@ -65,9 +69,10 @@ class SignupPage extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  FadeAnimation(1.2, makeInput(label: "Email")),
-                  FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true)),
-                  FadeAnimation(1.4, makeInput(label: "Confirmar Contraseña", obscureText: true)),
+                  FadeAnimation(1.2, makeInput(label: "Nombre",controller: _nameTextEditingController)),
+                  FadeAnimation(1.2, makeInput(label: "Email",controller: _emailTextEditingController)),
+                  FadeAnimation(1.3, makeInput(label: "Contraseña", obscureText: true,controller:_passwordTextEditingController)),
+                  FadeAnimation(1.4, makeInput(label: "Confirmar Contraseña", obscureText: true,controller: _cPasswordTextEditingController)),
                 ],
               ),
               FadeAnimation(1.5, Container(
@@ -84,7 +89,7 @@ class SignupPage extends StatelessWidget {
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
-                  onPressed: () {},
+                   onPressed: () {upload();}, 
                   color: kCategorypinkColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -99,7 +104,7 @@ class SignupPage extends StatelessWidget {
               
               FadeAnimation(1.6,FlatButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                       },                       
                       child :Text("¿Ya tienes cuenta?"+" Inicia Sesion", style: TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 16
@@ -110,9 +115,92 @@ class SignupPage extends StatelessWidget {
         ),
       );
    }
+
+     upload(){
+     _passwordTextEditingController.text == _cPasswordTextEditingController.text
+     ? _emailTextEditingController.text.isNotEmpty && 
+     _passwordTextEditingController.text.isNotEmpty &&
+      _cPasswordTextEditingController.text.isNotEmpty && 
+      _nameTextEditingController.text.isNotEmpty
+
+      ? uploadToStorage()
+      :showDialog(
+        context: context,
+        builder: (c)
+        {
+          return ErrorAlertDialog(message: "Por favor llene completamente los datos");
+        }
+       )
+      :showDialog(
+        context: context,
+        builder: (c)
+        {
+          return ErrorAlertDialog(message: "Las contraseñas no coinciden");
+        }
+       );
+
+   }
+
+   uploadToStorage(){
+    showDialog
+    (
+      context: context,
+      builder: (c)
+      {
+        return LoadingAlertDialog(message: "Registrando, Por Favor espere.....");
+      }
+    );
+    _registerUser();
+   }
+   FirebaseAuth _auth = FirebaseAuth.instance;
+void _registerUser() async
+{
+  FirebaseUser firebaseUser;
+  await _auth.createUserWithEmailAndPassword
+  (
+    email: _emailTextEditingController.text.trim(),
+   password: _passwordTextEditingController.text.trim(),
+   ).then((auth){
+     firebaseUser = auth.user;
+   }).catchError((error){
+     Navigator.pop(context);
+     showDialog(
+       context: context,
+       builder: (c)
+       {
+         return ErrorAlertDialog(message: error.message.toString(),);
+       }
+     );
+   });
+
+   if(firebaseUser != null)
+   {
+     saveUSerInfoToFireStore(firebaseUser).then((value){
+       Navigator.pop(context);
+       Route route = MaterialPageRoute (builder: (c) => StoreHome());
+       Navigator.pushReplacement(context, route);
+     });
+   }
+}
+  Future saveUSerInfoToFireStore(FirebaseUser fUser) async
+  {
+    Firestore.instance.collection("users").document(fUser.uid).setData({
+      "uid":fUser.uid,
+      "email":fUser.email,
+      "name":_nameTextEditingController.text.trim(),
+      ReposteriaApp.userCartList : ["garbageValue"],
+    });
+
+    await ReposteriaApp.sharedPreferences.setString("uid", fUser.uid);
+    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userEmail, fUser.email);
+    await ReposteriaApp.sharedPreferences.setString(ReposteriaApp.userName, _nameTextEditingController.text.trim(),);
+    await ReposteriaApp.sharedPreferences.setStringList(ReposteriaApp.userCartList, ["garbageValue"]);
+    
+  }
     }
 
-  Widget makeInput({label, obscureText = false}) {
+
+  Widget makeInput({label, obscureText = false, controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -123,6 +211,7 @@ class SignupPage extends StatelessWidget {
         ),),
         SizedBox(height: 5,),
         TextField(
+          controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -138,3 +227,6 @@ class SignupPage extends StatelessWidget {
       ],
     );
   }
+
+
+  

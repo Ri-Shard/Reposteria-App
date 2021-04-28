@@ -1,4 +1,5 @@
 import 'package:e_shop/Widgets/loadingWidget.dart';
+import 'package:e_shop/common/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,18 +11,15 @@ class LoadingAlertDialog extends StatelessWidget
   @override
   Widget build(BuildContext context)
   {
-    return AlertDialog(
+
+      return AlertDialog(
       key: key,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          circularProgress(),
-          SizedBox(
-            height: 10,
-          ),
-          Text(message),
-        ],
-      ),
+      content: Text(message,textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
+      actions: [  
+            CircularProgressIndicator(
+              backgroundColor: kCategorypinkColor,
+            ),      ],
     );
+
   }
 }
