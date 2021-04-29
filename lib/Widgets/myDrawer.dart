@@ -52,7 +52,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text("Inicio",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => StoreHome());
-                  Navigator.pushReplacement(context, route); 
+                  Navigator.push(context, route); 
                 } ,
                 ),
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
@@ -62,7 +62,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text("Mis Ordenes",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => MyOrders());
-                  Navigator.pushReplacement(context, route); 
+                  Navigator.push(context, route); 
                 } ,
                 ),
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
@@ -72,7 +72,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text("Mi carrito",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => CartPage());
-                  Navigator.pushReplacement(context, route); 
+                  Navigator.push(context, route); 
                 } ,
                 ),
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
@@ -82,7 +82,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text("Buscar",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => SearchProduct());
-                  Navigator.pushReplacement(context, route); 
+                  Navigator.push(context, route); 
                 } ,
                 ),
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),
@@ -92,7 +92,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text("Añadir nueva Direccion",style: TextStyle(color: Colors.white),),
                 onTap: () {
                   Route route = MaterialPageRoute (builder: (c) => AddAddress());
-                  Navigator.pushReplacement(context, route); 
+                  Navigator.push(context, route); 
                 } ,
                 ),
                 Divider(height: 10.0,color: Colors.white,thickness: 6.0),

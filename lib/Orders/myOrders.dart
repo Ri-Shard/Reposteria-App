@@ -27,7 +27,7 @@ class _MyOrdersState extends State<MyOrders> {
               icon:  Icon(Icons.arrow_drop_down_circle,color: Colors.white),
               onPressed: ()
               {
-                SystemNavigator.pop();
+                Navigator.pop(context);
               },
             ),
           ]

@@ -5,6 +5,7 @@ import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
+import 'package:e_shop/common/colors.dart';
 import 'package:e_shop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -149,7 +150,7 @@ class StatusBanner extends StatelessWidget {
           SizedBox(width: 20.0,),
           Text(
             "Pedido Realizado" + msg,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color:kCategorypinkColor),
           ),
           SizedBox(width: 5.0),
           CircleAvatar(
