@@ -23,7 +23,6 @@ class _ProductPageState extends State<ProductPage>
   @override
   Widget build(BuildContext context)
   {
-    Size screenSize = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(),

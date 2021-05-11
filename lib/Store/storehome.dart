@@ -244,7 +244,6 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                 
                               removeCartFunction();
                             
-                              //TODO refresh luego de la funcion de remove
                             },
                           ),
                     ),

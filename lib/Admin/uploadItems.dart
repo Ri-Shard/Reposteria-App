@@ -7,8 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:image/image.dart' as ImD;
 
 
 class UploadPage extends StatefulWidget
@@ -31,6 +29,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   bool uploading = false;
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return file ==null ? displayAdminHomeScreen() : displayAdminUploadFormScreen();
   }
@@ -116,6 +115,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   pickPhotoFromGallery() async 
   {
     Navigator.pop(context);
+    // ignore: deprecated_member_use
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(()
@@ -188,14 +188,14 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           ),
           Divider(color: Colors.pink,),
                     ListTile(
-            leading: Icon(Icons.perm_device_information, color: Colors.pink),
+            leading: Icon(Icons.article, color: Colors.pink),
             title: Container(
               width: 250.0,
               child: TextField(
                 style: TextStyle(color: Colors.deepPurpleAccent),
                 controller: _descriptionTextEditingController,
                 decoration: InputDecoration(
-                  hintText: " Descripcion ",
+                  hintText: " Ingredientes ",
                   hintStyle: TextStyle(color: Colors.deepPurpleAccent),
                   border: InputBorder.none,
                 )

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/Authentication/login.dart';
@@ -43,7 +41,6 @@ class SignupPage extends StatelessWidget {
     final TextEditingController _emailTextEditingController = TextEditingController();
     final TextEditingController _passwordTextEditingController = TextEditingController();
     final TextEditingController _cPasswordTextEditingController = TextEditingController();
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     @override
    Widget build(BuildContext context) {
             return SingleChildScrollView(

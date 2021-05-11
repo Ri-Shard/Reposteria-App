@@ -1,4 +1,3 @@
-import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/common/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

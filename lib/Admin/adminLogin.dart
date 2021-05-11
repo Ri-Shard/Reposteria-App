@@ -4,7 +4,6 @@ import 'package:e_shop/Animation/FadeAnimation.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/common/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_dialog_box/animated_dialog_box.dart';
 
 class AdminSignInPage extends StatelessWidget {
   @override
@@ -96,8 +95,7 @@ class AdminSignInPage extends StatelessWidget {
                               {
                                 return ErrorAlertDialog(message: "Por favor revisa los campos");
                               }
-                              );
-;                           
+                              );                         
                           },
                         color: kCategorypinkColor,
                         elevation: 0,
