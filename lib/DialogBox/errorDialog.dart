@@ -23,7 +23,7 @@ class ErrorAlertDialog extends StatelessWidget
         {
           Navigator.pop(context);
         },
-          color: kCategorypinkColor,
+          color: AppColors.kCategorypinkColor,
           child: Center(
             child: Text("OK"),
           ),

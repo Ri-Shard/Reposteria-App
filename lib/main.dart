@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             title: 'ReposteriaApp',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              primaryColor: kCategorypinkColor,
+              primaryColor: AppColors.kCategorypinkColor,
             ),
             home: SplashScreen()
     ),

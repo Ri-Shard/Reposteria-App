@@ -80,7 +80,7 @@ class AuthenticScreen  extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
                       },
-                      color: kCategorypinkColor,
+                      color: AppColors.kCategorypinkColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)
@@ -95,8 +95,8 @@ class AuthenticScreen  extends StatelessWidget {
                   ),
                     FadeAnimation(1.7,FlatButton.icon(
                       onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminSignInPage())),
-                      icon: (Icon(Icons.nature_people,color: kCategorypinkColor)),
-                      label: Text("Soy Administrador", style: TextStyle(color: kCategorypinkColor,fontWeight: FontWeight.bold),),
+                      icon: (Icon(Icons.nature_people,color: AppColors.kCategorypinkColor)),
+                      label: Text("Soy Administrador", style: TextStyle(color: AppColors.kCategorypinkColor,fontWeight: FontWeight.bold),),
                     ), 
                     ) 
                 ],

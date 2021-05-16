@@ -149,7 +149,7 @@ class StatusBanner extends StatelessWidget {
           SizedBox(width: 20.0,),
           Text(
             "Pedido Realizado" + msg,
-            style: TextStyle(color:kCategorypinkColor),
+            style: TextStyle(color:AppColors.kCategorypinkColor),
           ),
           SizedBox(width: 5.0),
           CircleAvatar(

@@ -16,7 +16,7 @@ class LoadingAlertDialog extends StatelessWidget
       content: Text(message,textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
       actions: [  
             CircularProgressIndicator(
-              backgroundColor: kCategorypinkColor,
+              backgroundColor: AppColors.kCategorypinkColor,
             ),      ],
     );
 

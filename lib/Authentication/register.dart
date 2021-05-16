@@ -87,7 +87,7 @@ class SignupPage extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 60,
                    onPressed: () {upload();}, 
-                  color: kCategorypinkColor,
+                  color: AppColors.kCategorypinkColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)

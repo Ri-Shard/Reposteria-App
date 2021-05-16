@@ -94,7 +94,7 @@ class _LoginState extends State<Login>
                               return ErrorAlertDialog(message: "Por favor revisa los campos");
                             }
                             );
-                        },                         color: kCategorypinkColor,
+                        },                         color: AppColors.kCategorypinkColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)

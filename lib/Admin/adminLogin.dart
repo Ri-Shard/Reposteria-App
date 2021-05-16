@@ -97,7 +97,7 @@ class AdminSignInPage extends StatelessWidget {
                               }
                               );                         
                           },
-                        color: kCategorypinkColor,
+                        color: AppColors.kCategorypinkColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)
